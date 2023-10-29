@@ -1,10 +1,19 @@
-// Learn more https://docs.expo.io/guides/customizing-metro
-const { getDefaultConfig } = require('expo/metro-config');
+const { getDefaultConfig } = require("expo/metro-config");
 
-/** @type {import('expo/metro-config').MetroConfig} */
-const config = getDefaultConfig(__dirname, {
-  // [Web-only]: Enables CSS support in Metro.
-  isCSSEnabled: true,
+const defaultConfig = getDefaultConfig(__dirname);
+
+defaultConfig.resolver.resolverMainFields = [
+  "sbmodern",
+  ...defaultConfig.resolver.resolverMainFields,
+];
+
+defaultConfig.transformer.getTransformOptions = async () => ({
+  transform: {
+    experimentalImportSupport: false,
+    inlineRequires: false,
+  },
 });
 
-module.exports = config;
+defaultConfig.watchFolders = [...defaultConfig.watchFolders, "./.ondevice"];
+
+module.exports = defaultConfig;
