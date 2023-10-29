@@ -14,5 +14,5 @@ export const Basic = (args) => <MyButton {...args} />;
 
 Basic.args = {
   text: "Hello World",
-  color: "purple",
+  // color: "red",
 };
