@@ -1,16 +1,8 @@
 {
   "expo": {
-    "plugins": [
-      [
-        "expo-barcode-scanner",
-        {
-          "cameraPermission": "Allow $(iftarbymicu) to access camera."
-        }
-      ]
-    ],
-    "name": "iftarbymicu",
-    "slug": "iftarbymicu",
-    "version": "2.0.0",
+    "name": "native",
+    "slug": "native",
+    "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,24 +11,21 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.hossam2312.iftarbymicu"
+      "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#FFFFFF"
       }
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "cf74db63-a702-4395-bc66-01996bd1e3ef"
-      }
     }
   }
 }
