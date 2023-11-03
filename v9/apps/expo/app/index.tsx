@@ -1,3 +1,4 @@
+import { Stack } from 'expo-router'
 import React, { useReducer } from 'react'
 import { Text, View, StyleSheet } from 'react-native'
 import { BarCodeScanner } from 'expo-barcode-scanner'
@@ -111,7 +112,7 @@ export function HomeScreen() {
   return (
     <View style={styles.container}>
       <BarCodeScanner
-        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        onBarCodeScanned={state.scanned ? undefined : handleBarCodeScanned}
         style={StyleSheet.absoluteFillObject}
       />
       <Sheet
@@ -250,4 +251,17 @@ const checkValidity = async (data) => {
       resolve(result ? 'Valid' : 'Invalid')
     }, 2000)
   })
+}
+
+export default function Screen() {
+  return (
+    <>
+      <Stack.Screen
+        options={{
+          title: 'Home',
+        }}
+      />
+      <HomeScreen />
+    </>
+  )
 }
