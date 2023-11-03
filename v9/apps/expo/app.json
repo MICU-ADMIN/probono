@@ -15,9 +15,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.iftarbymicuv9.app",
@@ -32,9 +30,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.iftarbymicuv9.app",
-      "permissions": [
-        "android.permission.CAMERA"
-      ]
+      "permissions": ["android.permission.CAMERA"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -47,14 +43,6 @@
           "cameraPermission": "Allow $(PRODUCT_NAME) to access camera."
         }
       ]
-    ],
-    "extra": {
-      "router": {
-        "origin": false
-      },
-      "eas": {
-        "projectId": "cdf73642-6dda-45df-a8ab-f7ac096531e9"
-      }
-    }
+    ]
   }
 }

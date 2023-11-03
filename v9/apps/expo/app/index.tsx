@@ -7,7 +7,7 @@ import { Shield, ShieldCheck, ShieldClose } from '@tamagui/lucide-icons'
 
 // Define the initial state for the useReducer hook
 const initialState = {
-  hasPermission: false, // Permission status for using the barcode scanner
+  hasPermission: null, // Permission status for using the barcode scanner
   scanned: false, // Flag to indicate if a barcode has been scanned
   data: null, // Data from the scanned barcode
   position: 0, // Current position
@@ -67,6 +67,15 @@ export function HomeScreen() {
   const [state, dispatch] = useReducer(reducer, initialState)
   const toast = useToastController()
 
+  React.useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync()
+      dispatch({ type: 'SET_HAS_PERMISSION', payload: status === 'granted' ? true : false })
+    }
+
+    getBarCodeScannerPermissions()
+  }, [])
+
   // Function to handle barcode scanning
   const handleBarCodeScanned = async ({ type, data }) => {
     // Update the state based on the scanned barcode
@@ -75,29 +84,30 @@ export function HomeScreen() {
     dispatch({ type: 'SET_POSITION_I' })
 
     // Call an async function to check the validity of the scanned data
-    const res = await checkValidity(data)
+    // const res = await checkValidity(data)
+
+    console.log(type, data)
     dispatch({ type: 'SET_POSITION_I' })
-    dispatch({ type: 'SET_RESULT', payload: res })
+    dispatch({ type: 'SET_RESULT', payload: true })
     dispatch({ type: 'SET_KEY' })
     dispatch({ type: 'SET_HISTORY', payload: data })
-    dispatch({ type: 'SET_DATA', payload: null })
+    dispatch({ type: 'SET_DATA', payload: data })
 
     // Set a timeout to reset the scanned state after 500 milliseconds
     setTimeout(function () {
       dispatch({ type: 'SET_SCANNED', payload: false })
-    }, 500)
+    }, 0)
 
     // Show a toast message based on the scanning result
-    toast &&
-      toast.show(`${res}`, {
-        message:
-          res === 'Invalid'
-            ? 'Nothing found, perhaps try again.'
-            : 'Successful read, please continue',
-      })
+    //   toast &&
+    //     toast.show(`${res}`, {
+    //       message:
+    //         res === 'Invalid'
+    //           ? 'Nothing found, perhaps try again.'
+    //           : 'Successful read, please continue',
+    //     })
   }
 
-  // Check the camera permission status and render accordingly
   if (state.hasPermission === null) {
     return <Text>Requesting for camera permission</Text>
   }
@@ -111,32 +121,63 @@ export function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <BarCodeScanner
-        onBarCodeScanned={state.scanned ? undefined : handleBarCodeScanned}
-        style={StyleSheet.absoluteFillObject}
-      />
-      <Sheet
-        modal
-        animation="medium"
-        // if scanned is true open modal
-        // open={state.scanned}
-        open={state.scanned}
-        // when modal is closed take the false value and apply it to the scanned
-        onOpenChange={(value) => dispatch({ type: 'SET_SCANNED', payload: value })}
-        // only come up 30% of the screen
-        snapPoints={[40]}
-        position={state.position}
-        onPositionChange={(value) => dispatch({ type: 'SET_POSITION', payload: value })}
-        dismissOnSnapToBottom
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: 'bold',
+          textAlign: 'center',
+          marginBottom: 20,
+        }}
       >
-        <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
-        <Sheet.Frame ai="center" jc="center">
-          <Sheet.Handle />
-          <MountingAnimation key={state.key}>
-            <LoadingAnimation result={state.result} positionI={state.positionI} />
-          </MountingAnimation>
-        </Sheet.Frame>
-      </Sheet>
+        Scan a barcode
+      </Text>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'column',
+          justifyContent: 'center',
+          maxHeight: 500,
+        }}
+      >
+        <BarCodeScanner
+          onBarCodeScanned={state.scanned ? undefined : handleBarCodeScanned}
+          style={StyleSheet.absoluteFillObject}
+        />
+        <Sheet
+          modal
+          animation="medium"
+          // if scanned is true open modal
+          // open={state.scanned}
+          open={state.scanned}
+          // when modal is closed take the false value and apply it to the scanned
+          onOpenChange={(value) => dispatch({ type: 'SET_SCANNED', payload: value })}
+          // only come up 30% of the screen
+          snapPoints={[40]}
+          position={state.position}
+          onPositionChange={(value) => dispatch({ type: 'SET_POSITION', payload: value })}
+          dismissOnSnapToBottom
+        >
+          <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
+          <Sheet.Frame ai="center" jc="center">
+            <Sheet.Handle />
+            <MountingAnimation key={state.key}>
+              <LoadingAnimation result={state.result} positionI={state.positionI} />
+            </MountingAnimation>
+          </Sheet.Frame>
+        </Sheet>
+      </View>
+      {state?.data && (
+        <Text
+          style={{
+            fontSize: 20,
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: 20,
+          }}
+        >
+          Code : {state.data}
+        </Text>
+      )}
     </View>
   )
 }
@@ -145,6 +186,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
+    alignContent: 'center',
     justifyContent: 'center',
   },
 })
