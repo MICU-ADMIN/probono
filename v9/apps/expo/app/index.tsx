@@ -77,9 +77,9 @@ export function HomeScreen() {
   }, [])
 
   // Function to handle barcode scanning
-  const handleBarCodeScanned = async ({ type, data }) => {
+  const handleBarCodeScanned = ({ type, data }) => {
     // Update the state based on the scanned barcode
-    dispatch({ type: 'SET_SCANNED', payload: true })
+    // dispatch({ type: 'SET_SCANNED', payload: true })
     dispatch({ type: 'SET_DATA', payload: data })
     dispatch({ type: 'SET_POSITION_I' })
 
@@ -96,7 +96,7 @@ export function HomeScreen() {
     // Set a timeout to reset the scanned state after 500 milliseconds
     setTimeout(function () {
       dispatch({ type: 'SET_SCANNED', payload: false })
-    }, 0)
+    }, 100)
 
     // Show a toast message based on the scanning result
     //   toast &&
@@ -140,7 +140,7 @@ export function HomeScreen() {
         }}
       >
         <BarCodeScanner
-          onBarCodeScanned={state.scanned ? undefined : handleBarCodeScanned}
+          onBarCodeScanned={handleBarCodeScanned}
           style={StyleSheet.absoluteFillObject}
         />
         <Sheet
@@ -150,19 +150,21 @@ export function HomeScreen() {
           // open={state.scanned}
           open={state.scanned}
           // when modal is closed take the false value and apply it to the scanned
-          onOpenChange={(value) => dispatch({ type: 'SET_SCANNED', payload: value })}
+          // onOpenChange={(value) => dispatch({ type: 'SET_SCANNED', payload: value })}
           // only come up 30% of the screen
           snapPoints={[40]}
           position={state.position}
-          onPositionChange={(value) => dispatch({ type: 'SET_POSITION', payload: value })}
+          // onPositionChange={(value) => dispatch({ type: 'SET_POSITION', payload: value })}
           dismissOnSnapToBottom
         >
           <Sheet.Overlay animation="lazy" enterStyle={{ opacity: 0 }} exitStyle={{ opacity: 0 }} />
           <Sheet.Frame ai="center" jc="center">
             <Sheet.Handle />
-            <MountingAnimation key={state.key}>
-              <LoadingAnimation result={state.result} positionI={state.positionI} />
-            </MountingAnimation>
+            {state.scanned && (
+              <MountingAnimation key={state.key}>
+                <LoadingAnimation result={state.result} positionI={state.positionI} />
+              </MountingAnimation>
+            )}
           </Sheet.Frame>
         </Sheet>
       </View>
