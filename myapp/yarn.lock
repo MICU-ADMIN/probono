@@ -8682,6 +8682,7 @@ __metadata:
     babel-plugin-transform-inline-environment-variables: ^0.4.4
     burnt: ^0.12.0
     expo: ^49.0.0
+    expo-barcode-scanner: ~12.5.3
     expo-constants: ~14.4.2
     expo-dev-client: ~2.4.11
     expo-font: ~11.4.0
@@ -8725,6 +8726,17 @@ __metadata:
     path-browserify: ^1.0.0
     url-parse: ^1.5.9
   checksum: 02607b67b8b53e47825ded6ca52eee47ae957cdc4b1501cdc0373bbd50ccfef605ba8a05a07ee88225622c7dc6054dfe1b64f03b21f09aaea7e1b4bf132d3ad7
+  languageName: node
+  linkType: hard
+
+"expo-barcode-scanner@npm:~12.5.3":
+  version: 12.5.3
+  resolution: "expo-barcode-scanner@npm:12.5.3"
+  dependencies:
+    expo-image-loader: ~4.3.0
+  peerDependencies:
+    expo: "*"
+  checksum: 10923168c29620c64935f9b171c37e2a22d86bedc7dd263460683c2e27c9620c857b3f852194f58cc7109a68380174a4c0faa502e715445aacec95f622d38e54
   languageName: node
   linkType: hard
 
@@ -8828,6 +8840,15 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 9bcec8d92349471fb0ada349f02a0aeca88e630ff6efa42f68bc2427e96b651d5617e47a37887a61000558eb033abc82386d5a431b693dc82661c5eb4c20d2d6
+  languageName: node
+  linkType: hard
+
+"expo-image-loader@npm:~4.3.0":
+  version: 4.3.0
+  resolution: "expo-image-loader@npm:4.3.0"
+  peerDependencies:
+    expo: "*"
+  checksum: 0440ac80a7b2331cdfd0db88aac0ba2fe61689e6347e2c6bedba6bf3220b95410c724ac9004252486870b582fc36d47d4bff008bba7052dcee2830256950974f
   languageName: node
   linkType: hard
 

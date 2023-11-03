@@ -16,20 +16,49 @@ import { Form, H4, Spinner } from 'tamagui'
 import { Toast, useToastState } from '@tamagui/toast'
 import { Label, Switch } from 'tamagui'
 
+import { Text, View, StyleSheet } from 'react-native'
+import { BarCodeScanner } from 'expo-barcode-scanner'
 
+function Barcode({ setData }) {
+  const [hasPermission, setHasPermission] = useState(null)
+  const [scanned, setScanned] = useState(false)
 
+  useEffect(() => {
+    const getBarCodeScannerPermissions = async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync()
+      setHasPermission(status === 'granted')
+    }
 
+    getBarCodeScannerPermissions()
+  }, [])
 
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true)
+    setData(data)
+    alert(`Bar code with type ${type} and data ${data} has been scanned!`)
+  }
 
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>
+  }
 
-
-
-
-
+  return (
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+    </View>
+  )
+}
 
 export function HomeScreen() {
   const [open, setOpen] = useState(false)
-  const [data, setData] = useState(3409283240832)
+  const [data, setData] = useState()
 
   const linkProps = useLink({
     href: '/user/nate',
@@ -45,35 +74,10 @@ export function HomeScreen() {
 
   return (
     <YStack f={1} jc="center" ai="center" p="$4" space>
-      <YStack space="$4" maw={600}>
-        <H1 ta="center">Welcome to Tamagui.</H1>
-        <Paragraph ta="center">
-          Here's a basic starter to show navigating from one screen to another. This screen uses the
-          same code on Next.js and React Native.
-        </Paragraph>
-
-        <Separator />
-        <Paragraph ta="center">
-          Made by{' '}
-          <Anchor color="$color12" href="https://twitter.com/natebirdman" target="_blank">
-            @natebirdman
-          </Anchor>
-          ,{' '}
-          <Anchor
-            color="$color12"
-            href="https://github.com/tamagui/tamagui"
-            target="_blank"
-            rel="noreferrer"
-          >
-            give it a ⭐️
-          </Anchor>
-        </Paragraph>
-      </YStack>
-
-      <XStack>
+      <Barcode setData={setData} />
+      {/* <XStack>
         <Button {...linkProps}>Link to user</Button>
-      </XStack>
-
+      </XStack> */}
       <SheetDemo data={data} open={open} setOpen={setOpen} />
     </YStack>
   )

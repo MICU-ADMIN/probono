@@ -1,9 +1,18 @@
 {
   "expo": {
+    "plugins": [
+      "expo-router",
+      [
+        "expo-barcode-scanner",
+        {
+          "cameraPermission": "Allow $(iftarbymicutwo) to access camera."
+        }
+      ]
+    ],
     "name": "iftarbymicutwo",
     "slug": "iftarbymicutwo",
     "scheme": "iftarbymicutwo",
-    "version": "1.0.0",
+    "version": "4.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -15,9 +24,7 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.iftarbymicutwo.app"
@@ -32,9 +39,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      "expo-router"
-    ],
     "extra": {
       "router": {
         "origin": false
